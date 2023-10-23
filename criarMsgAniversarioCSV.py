@@ -118,8 +118,8 @@ if w:
     #filt_df = filt_df.loc[df["Body Mass (g)"] < input.mass()]
     #df = df[df['Data de Aniversário'] == '22/12']
 
-    #if(nome != ''):
-#        df = df[df['Nome'] == nome]
+    if(nome != ''):
+        df = df[df['Nome'] == nome]
     
 else:
     
@@ -130,7 +130,7 @@ else:
     #st.write(df.to_html);
     st.write(df.eval);
     
-    st.write(df)        
+st.write(df)        
 
     # rodar no terminal
     # streamlit run criarMsgAniversarioCSV.py
