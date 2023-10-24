@@ -8,6 +8,7 @@ Created on Sat Oct 21 12:28:14 2023
 
 import pandas as pd
 import streamlit as st
+import datetime
 
 from pandas.api.types import (
     is_categorical_dtype,
@@ -94,43 +95,45 @@ def filter_dataframe(df: pd.DataFrame) -> pd.DataFrame:
 # Cache the dataframe so it's only loaded once
 @st.cache_data
 def load_data():
-    return pd.DataFrame(
-        {
-            "first column": [1, 2, 3, 4],
-            "second column": [10, 20, 30, 40],
-        }
-    )
-
+    #return pd.DataFrame(
+    #    {
+    #        "first column": [1, 2, 3, 4],
+    #        "second column": [10, 20, 30, 40],
+    #    }
+    #)
+    return pd.read_csv('../github/aniversarios.csv', encoding="iso8859-1");
+    
 w = st.file_uploader("Upload a CSV file", type="csv")
 if w:
     df = pd.read_csv(w, encoding="iso8859-1")
-    st.dataframe(filter_dataframe(df))
+    #st.dataframe(filter_dataframe(df))
     
-    nome = st.sidebar.text_input('Nome')
-    dtIni = st.sidebar.date_input("Selecione a data inicial", value="today", format="DD/MM/YYYY")
-    dtFim = st.sidebar.date_input("Selecione a data final", value="today", format="DD/MM/YYYY")
+    #nome = st.sidebar.text_input('Nome')
+    dtIni = st.sidebar.date_input("Selecione a data inicial", datetime.date(2023, 7, 11), format="DD/MM/YYYY")
+    dtFim = st.sidebar.date_input("Selecione a data final", datetime.date(2023, 7, 13), format="DD/MM/YYYY")
     dtRec = st.sidebar.date_input("Selecione a data de recebimento", value="today", format="DD/MM/YYYY")
     
-    #st.header('Mostrando resultados de ' + dtIni.today() + ' a ' + dtFim.today());
-    #st.write('Mostrando resultados de ' + dtIni + ' a ' + dtFim);
-    #df['Data de Aniversário'] = pd.to_datetime(df['Data de Aniversário'], format='%d/%m')
-    #df = df[df['Data de Aniversário']== '22/12']
-    #filt_df = filt_df.loc[df["Body Mass (g)"] < input.mass()]
-    #df = df[df['Data de Aniversário'] == '22/12']
+    df['dtAniver'] = pd.to_datetime(df['Data de Aniversário']+"/2023")
+    df['dtIni'] = dtIni
+    df['dtFim'] = dtFim
+    df['dtRec'] = dtRec
+    df['cond'] = (df['dtFim'] >= df['dtAniver']) & (df['dtIni'] <= df['dtAniver'])
+    
+    #if(nome != ''):
+     #   df = df[df['Nome'] == nome]
 
-    if(nome != ''):
-        df = df[df['Nome'] == nome]
+    for i, row_i in df.iterrows():
+        if row_i['cond'] == True:
+            st.write(row_i['Nome'], row_i['dtAniver'], row_i['E-mail'])  
+        
+    #for index, row in df.iterrows():
+        #print(row['Nome'], row['condini']) 
     
 else:
     
     st.header('Escolha seu arquivo para iniciar o processo!');
     
     df = load_data();
-
-    #st.write(df.to_html);
-    st.write(df.eval);
-    
-st.write(df)        
 
     # rodar no terminal
     # streamlit run criarMsgAniversarioCSV.py
