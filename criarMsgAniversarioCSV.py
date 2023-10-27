@@ -56,8 +56,8 @@ if w:
     df = pd.read_csv(w, encoding="iso8859-1")
     
     #nome = st.sidebar.text_input('Nome')
-    dtIni = st.sidebar.date_input("Selecione a data inicial", datetime.date(2023, 7, 11), format="DD/MM/YYYY")
-    dtFim = st.sidebar.date_input("Selecione a data final", datetime.date(2023, 7, 13), format="DD/MM/YYYY")
+    dtIni = st.sidebar.date_input("Selecione a data inicial", value="today", format="DD/MM/YYYY")
+    dtFim = st.sidebar.date_input("Selecione a data final", value="today", format="DD/MM/YYYY")
     tOn = st.sidebar.toggle('No dia')
     #dtRec = st.sidebar.date_input("Selecione a data de recebimento", datetime.date(2023, 7, 12), format="DD/MM/YYYY")
     #dtRec = st.sidebar.date_input("Selecione a data de recebimento", value="today", format="DD/MM/YYYY")    
